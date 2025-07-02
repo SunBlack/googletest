@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for PCR to show (nearly) all warnings" Description="Code analysis rules for PCR." ToolsVersion="17.0">
+  <IncludeAll Action="Warning" /> <!-- Similar to the default ruleset AllRules.ruleset -->
+  <Rules AnalyzerId="Microsoft.Analyzers.NativeCodeAnalysis" RuleNamespace="Microsoft.Rules.Native">
+    <!-- Disable warnings related only to GSL: Guidelines Support Library -->
+    <Rule Id="C26429" Action="None" /><!-- Symbol is never tested for nullness, it can be marked as gsl::not_null. -->
+    <Rule Id="C26431" Action="None" /><!-- The type of expression is already gsl::not_null. Do not test it for nullness. -->
+    <Rule Id="C26446" Action="None" /><!-- Prefer to use gsl::at() instead of unchecked subscript operator. -->
+    <Rule Id="C26448" Action="None" /><!-- Consider using gsl::finally if final action is intended. -->
+    <Rule Id="C26458" Action="None" /><!-- Prefer to use gsl::at() instead of unchecked subscript operator. -->
+    <Rule Id="C26459" Action="None" /><!-- STL function with a raw pointer parameter may be unsafe. Consider wrapping your range in a gsl::span and pass as a span iterator. -->
+    <Rule Id="C26821" Action="None" /><!-- Consider using gsl::span instead of std::span to guarantee runtime bounds safety. -->
+  </Rules>
+</RuleSet>

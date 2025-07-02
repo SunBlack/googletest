@@ -34,3 +34,26 @@ if(BUILD_GMOCK)
 else()
   add_subdirectory( googletest )
 endif()
+
+function(get_all_targets _result _dir)
+    get_property(_subdirs DIRECTORY "${_dir}" PROPERTY SUBDIRECTORIES)
+    foreach(_subdir IN LISTS _subdirs)
+        get_all_targets(${_result} "${_subdir}")
+    endforeach()
+
+    get_directory_property(_sub_targets DIRECTORY "${_dir}" BUILDSYSTEM_TARGETS)
+    set(${_result} ${${_result}} ${_sub_targets} PARENT_SCOPE)
+endfunction()
+
+get_all_targets(all_targets ${CMAKE_CURRENT_SOURCE_DIR})
+message("Targets: ${all_targets}")
+
+foreach(target IN LISTS all_targets)
+	if (NOT target STREQUAL "ZERO_CHECK") # Skip CMake internal target
+		set_target_properties(${target} PROPERTIES
+			VS_GLOBAL_RunCodeAnalysis TRUE
+			VS_GLOBAL_EnableMicrosoftCodeAnalysis TRUE
+			VS_GLOBAL_CodeAnalysisRuleSet "${CMAKE_SOURCE_DIR}/googletest.ruleset"
+		)
+	endif()
+endforeach()
